@@ -5,22 +5,20 @@ const loginInput = document.querySelector("#login-form input");
 const greeting = document.querySelector("#greeting");
 
 const HIDDEN_CLASSNAME = "hidden";
-const USERNAME_KEY = "username"; // key값으로 쓰는 string값, 오타방지
+const USERNAME_KEY = "username";
 
 function onLoginSubmit(info) {
   info.preventDefault();
   loginForm.classList.add(HIDDEN_CLASSNAME);
-  const username = loginInput.value;
 
-  //localStorage : 브라우저에 뭔가를 저장할 수 있게 해주는 api
-  localStorage.setItem(USERNAME_KEY, username); //key, value
-  //getItem에 key값을 넣어서 value를 가져올 수 있다.
-  //removeItme에 key값을 넣어서 값을 삭제할 수 있다.
+  localStorage.setItem(USERNAME_KEY, loginInput.value);
 
-  paintGreetings(username);
+  paintGreetings();
 }
 
-function paintGreetings(username) {
+function paintGreetings() {
+  const username = localStorage.getItem(USERNAME_KEY);
+  // localStorage를 한번더 보는 방식
   greeting.innerText = `Hello ${username}`;
   greeting.classList.remove(HIDDEN_CLASSNAME);
 }
@@ -28,10 +26,8 @@ function paintGreetings(username) {
 const savedUsername = localStorage.getItem(USERNAME_KEY);
 
 if (savedUsername === null) {
-  // show the form
   loginForm.classList.remove(HIDDEN_CLASSNAME);
   loginForm.addEventListener("submit", onLoginSubmit);
 } else {
-  // show the greeting
-  paintGreetings(savedUsername);
+  paintGreetings();
 }
